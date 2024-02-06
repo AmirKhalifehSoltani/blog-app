@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
 use App\Enums\UserType;
+use App\Http\Controllers\Controller;
 use App\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
