@@ -17,13 +17,22 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         DB::table('users')->insert([
-            'first_name' => Str::random(10),
-            'last_name' => Str::random(10),
-            'email' => 'amir@amir.com',
-			'user_type' => UserType::USER,
-//            'email' => Str::random(10).'@example.com',
-            'password' => Hash::make('1234'),
+            [
+                'first_name' => Str::random(10),
+                'last_name'  => Str::random(10),
+                'email'      => 'client@alibaba.ir',
+                'user_type'  => UserType::CLIENT,
+                'password'   => Hash::make('12345678'),
+            ], [
+                'first_name' => Str::random(10),
+                'last_name'  => Str::random(10),
+                'email'      => 'admin@alibaba.ir',
+                'user_type'  => UserType::ADMIN,
+                'password'   => Hash::make('12345678'),
+            ]
         ]);
+
+
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
