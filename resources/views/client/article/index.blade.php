@@ -147,7 +147,8 @@
                                     </svg>
                                   </span>
                                 </a>
-                                <a href="{{ route('articles.edit', $article->id) }}" class="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                                @if($article->author_id === auth()->id())
+                                <a href="{{ route('articles.edit', $article->id) }}" class="disabled relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                                         type="button">
                                   <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="w-4 h-4">
@@ -155,6 +156,7 @@
                                     </svg>
                                   </span>
                                 </a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
