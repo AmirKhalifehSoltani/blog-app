@@ -34,5 +34,6 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::post('/login', [AdminAuthController::class, 'do_login'])->name('do_login');
     Route::get('/logout', [AdminAuthController::class, 'logout'])->name('logout');
 
-    Route::resource('articles', AdminArticleController::class)->middleware('auth:admin');
+    Route::resource('articles', AdminArticleController::class)->only(['index', 'show', 'destroy'])->middleware('auth:admin');
+    Route::patch('articles/{article}/publish', [AdminArticleController::class, 'publish'])->name('articles.publish')->middleware('auth:admin');
 });
