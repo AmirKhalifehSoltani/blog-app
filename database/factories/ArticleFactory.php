@@ -17,11 +17,16 @@ class ArticleFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            'title'              => fake()->title(),
-            'content'            => fake()->text(),
+        $article_data = [
+            'title'              => fake()->realText(50),
+            'content'            => fake()->realText(1000),
             'publication_status' => fake()->randomElement(['draft', 'published']),
-            'published_at'       => fake()->dateTimeBetween('-1 year'),
         ];
+
+        if ($article_data['publication_status'] === 'published') {
+            $article_data['published_at'] = fake()->dateTimeBetween('-1 year');
+        }
+
+        return $article_data;
     }
 }
