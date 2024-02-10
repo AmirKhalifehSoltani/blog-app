@@ -18,10 +18,9 @@ class AuthController extends Controller
     public function do_login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
-        $credentials['user_type'] = UserType::ADMIN;
-        if (auth()->attempt($credentials)) {
+        if (auth()->guard('admin')->attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('home');
+            return redirect()->route('admin.articles.index');
         }
         return back()->withErrors([
             'email' => 'invalid credentials']
@@ -30,10 +29,10 @@ class AuthController extends Controller
 
     public function logout(Request $request): RedirectResponse
     {
-        auth()->logout();
+        auth()->guard('admin')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('home');
+        return redirect()->route('admin.login');
     }
 }

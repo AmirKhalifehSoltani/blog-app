@@ -18,10 +18,10 @@ class AuthController extends Controller
     public function do_login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
-        $credentials['user_type'] = UserType::CLIENT;
+//        $credentials['user_type'] = UserType::CLIENT;
         if (auth()->attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('home');
+            return redirect()->route('articles.index');
         }
         return back()->withErrors([
             'email' => 'invalid credentials']
@@ -34,6 +34,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('home');
+        return redirect()->route('login');
     }
 }

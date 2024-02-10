@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('content');
             $table->foreignId('author_id');
-            $table->foreign('author_id')->references('id')->on('users');
+            $table->foreign('author_id')->references('id')->on('clients');
             $table->enum('publication_status', ['draft', 'published'])->default('draft');
             $table->dateTime('published_at')->nullable();
             $table->softDeletes();

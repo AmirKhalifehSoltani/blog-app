@@ -16,6 +16,6 @@ class Article extends Model
 
     public function author(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'author_id');
+        return $this->belongsTo(Client::class, 'author_id');
     }
 }

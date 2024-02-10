@@ -25,7 +25,7 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'do_login'])->name('do_login');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::resource('articles', ArticleController::class)->except('destroy');
+Route::resource('articles', ArticleController::class)->except('destroy')->middleware('auth:web');
 
 
 
@@ -34,5 +34,5 @@ Route::prefix('admin')->as('admin.')->group(function () {
     Route::post('/login', [AdminAuthController::class, 'do_login'])->name('do_login');
     Route::get('/logout', [AdminAuthController::class, 'logout'])->name('logout');
 
-    Route::resource('articles', AdminArticleController::class);
+    Route::resource('articles', AdminArticleController::class)->middleware('auth:admin');
 });
