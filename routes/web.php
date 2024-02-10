@@ -36,4 +36,6 @@ Route::prefix('admin')->as('admin.')->group(function () {
 
     Route::resource('articles', AdminArticleController::class)->only(['index', 'show', 'destroy'])->middleware('auth:admin');
     Route::patch('articles/{article}/publish', [AdminArticleController::class, 'publish'])->name('articles.publish')->middleware('auth:admin');
+    Route::get('articles_trash', [AdminArticleController::class, 'trash_list'])->name('articles.trash_list')->middleware('auth:admin');
+    Route::patch('articles/{article}/restore', [AdminArticleController::class, 'restore'])->name('articles.restore')->withTrashed()->middleware('auth:admin');
 });

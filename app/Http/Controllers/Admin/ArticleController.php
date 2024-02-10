@@ -42,4 +42,16 @@ class ArticleController extends Controller
         $article->update(['publication_status'=> 'published', 'published_at' => now()]);
         return redirect()->route('admin.articles.index');
     }
+
+    public function trash_list(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        $articles = Article::query()->with('author')->onlyTrashed()->get();
+        return view('admin.article.trash_list', compact(['articles']));
+    }
+
+    public function restore(Article $article): RedirectResponse
+    {
+        $article->restore();
+        return redirect()->route('admin.articles.index');
+    }
 }
