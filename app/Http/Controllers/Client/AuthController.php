@@ -12,8 +12,11 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function login(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function login(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application|RedirectResponse
     {
+        if (auth()->check()) {
+            return redirect()->route('articles.index');
+        }
         return view('client.auth.login');
     }
 
