@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Client\StoreArticleRequest;
+use App\Http\Requests\Client\Article\StoreArticleRequest;
+use App\Http\Requests\Client\Article\UpdateArticleRequest;
 use App\Models\Article;
 use App\Service\Client\ArticleService;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
@@ -48,9 +48,8 @@ class ArticleController extends Controller
      */
     public function show(Article $article): View|Application|Factory|\Illuminate\Contracts\Foundation\Application|RedirectResponse
     {
-        $article = $this->articleService->show($article);
-        if ($article instanceof RedirectResponse) {
-            return $article;
+        if (!$this->articleService->userCanSeeArticle($article)) {
+            return back()->withErrors(['error' => 'Access Forbidden!']);
         }
         return view('client.article.show', compact('article'));
     }
@@ -60,9 +59,8 @@ class ArticleController extends Controller
      */
     public function edit(Article $article): \Illuminate\Contracts\Foundation\Application|Factory|View|Application|RedirectResponse
     {
-        $article = $this->articleService->edit($article);
-        if ($article instanceof RedirectResponse) {
-            return $article;
+        if (!$this->articleService->userCanEditArticle($article)) {
+            return back()->withErrors(['error' => 'Access Forbidden!']);
         }
         return view('client.article.edit', compact('article'));
     }
@@ -70,9 +68,12 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Article $article): RedirectResponse
+    public function update(UpdateArticleRequest $request, Article $article): RedirectResponse
     {
-        $this->articleService->update($article, $request->only(['title', 'content']));
+        if (!$this->articleService->userCanEditArticle($article)) {
+            return back()->withErrors(['error' => 'Access Forbidden!']);
+        }
+        $article = $this->articleService->update($article, $request->only(['title', 'content']));
         return redirect()->route('articles.show', compact('article'));
     }
 }

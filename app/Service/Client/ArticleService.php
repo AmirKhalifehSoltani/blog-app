@@ -10,8 +10,6 @@ namespace App\Service\Client;
 use App\Enums\PublicationStatus;
 use App\Models\Article;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 
 class ArticleService
 {
@@ -19,7 +17,7 @@ class ArticleService
     {
         return Article::query()
             ->where(function ($query) {
-                $query->where('author_id', Auth::id())
+                $query->where('author_id', auth()->id())
                     ->orWhere('publication_status', PublicationStatus::PUBLISHED->value);
             })
             ->with('author')
@@ -28,32 +26,23 @@ class ArticleService
 
     public function store(array $articleData): Article
     {
-        $articleData['author_id'] = Auth::id();
+        $articleData['author_id'] = auth()->id();
         return Article::create($articleData);
     }
 
-    public function show(Article $article): Article|RedirectResponse
+    public function update(Article $article, array $articleData): Article
     {
-        if ($article->author_id !== Auth::id() && $article->publication_status !== PublicationStatus::PUBLISHED->value) {
-            return redirect()->back()->withErrors(['error' => 'Access Forbidden']);
-        }
-        return $article;
-    }
-
-    public function edit(Article $article): Article|RedirectResponse
-    {
-        if ($article->author_id !== Auth::id()) {
-            return redirect()->back()->withErrors(['error' => 'Access Forbidden']);
-        }
-        return $article;
-    }
-
-    public function update(Article $article, array $articleData): Article|RedirectResponse
-    {
-        if ($article->author_id !== Auth::id()) {
-            return back()->withErrors(['error' => 'Access Forbidden']);
-        }
         $article->update($articleData);
         return $article;
+    }
+
+    public function userCanEditArticle(Article $article): bool
+    {
+        return ($article->author_id === auth()->id());
+    }
+
+    public function userCanSeeArticle(Article $article): bool
+    {
+        return ($article->author_id === auth()->id() || $article->publication_status === PublicationStatus::PUBLISHED->value);
     }
 }
