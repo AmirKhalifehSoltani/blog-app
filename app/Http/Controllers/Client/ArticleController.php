@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Enums\PublicationStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\StoreArticleRequest;
 use App\Models\Article;
@@ -18,7 +19,13 @@ class ArticleController extends Controller
      */
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $articles = Article::with('author')->get();
+        $articles = Article::query()
+            ->where(function ($query) {
+                $query->where('author_id', auth()->id())
+                    ->orWhere('publication_status', PublicationStatus::PUBLISHED->value);
+            })
+            ->with('author')
+            ->get();
         return view('client.article.index', compact(['articles']));
     }
 
@@ -44,8 +51,11 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Article $article): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function show(Article $article): View|Application|Factory|\Illuminate\Contracts\Foundation\Application|RedirectResponse
     {
+        if ($article->author_id !== auth()->id() && $article->publication_status !== PublicationStatus::PUBLISHED->value) {
+            return back()->withErrors(['error' => 'Access Forbidden']);
+        }
         return view('client.article.show', compact(['article']));
     }
 

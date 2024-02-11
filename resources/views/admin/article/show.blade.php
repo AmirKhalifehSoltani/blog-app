@@ -1,3 +1,4 @@
+@php use App\Enums\PublicationStatus; @endphp
 @extends('template.layout')
 
 @section('content')
@@ -93,18 +94,18 @@
                             </button>
                         </form>
                     </div>
-                    @if($article->publication_status !== 'published')
-                    <div class="basis-1/2">
-                        <form action="{{ route('admin.articles.publish', $article->id) }}" method="POST"
-                              onsubmit="return confirm('Delete this article?')" class="relative">
-                            @csrf
-                            @method('PATCH')
-                            <button type="submit"
-                                    class="absolute bg-green-500 rounded-lg transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 border py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white transition-all hover:opacity-75 focus:ring focus:ring-green-800 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                Publish Article
-                            </button>
-                        </form>
-                    </div>
+                    @if($article->publication_status !== PublicationStatus::PUBLISHED->value)
+                        <div class="basis-1/2">
+                            <form action="{{ route('admin.articles.publish', $article->id) }}" method="POST"
+                                  onsubmit="return confirm('Delete this article?')" class="relative">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit"
+                                        class="absolute bg-green-500 rounded-lg transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 border py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white transition-all hover:opacity-75 focus:ring focus:ring-green-800 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                                    Publish Article
+                                </button>
+                            </form>
+                        </div>
                     @endif
                 </div>
             </div>

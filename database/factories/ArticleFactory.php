@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\PublicationStatus;
 use App\Models\Article;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,10 +21,10 @@ class ArticleFactory extends Factory
         $article_data = [
             'title'              => fake()->realText(50),
             'content'            => fake()->realText(1000),
-            'publication_status' => fake()->randomElement(['draft', 'published']),
+            'publication_status' => fake()->randomElement([PublicationStatus::DRAFT->value, PublicationStatus::PUBLISHED->value]),
         ];
 
-        if ($article_data['publication_status'] === 'published') {
+        if ($article_data['publication_status'] === PublicationStatus::PUBLISHED->value) {
             $article_data['published_at'] = fake()->dateTimeBetween('-1 year');
         }
 

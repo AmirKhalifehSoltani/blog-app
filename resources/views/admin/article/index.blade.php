@@ -1,3 +1,4 @@
+@php use App\Enums\PublicationStatus; @endphp
 @extends('template.layout')
 
 @section('content')
@@ -130,7 +131,7 @@
                             <td class="p-4 border-b border-blue-gray-50">
                                 <div class="w-max">
                                     <div
-                                            class="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-md select-none whitespace-nowrap @if($article->publication_status == 'published') text-green-900 bg-green-500/20 @else text-blue-900 bg-blue-500/20 @endif">
+                                            class="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-md select-none whitespace-nowrap @if($article->publication_status == PublicationStatus::PUBLISHED->value) text-green-900 bg-green-500/20 @else text-blue-900 bg-blue-500/20 @endif">
                                         <span class="">{{ $article->publication_status }}</span>
                                     </div>
                                 </div>
@@ -172,7 +173,7 @@
                                             </svg>
                                         </button>
                                     </form>
-                                    @if($article->publication_status === 'draft')
+                                    @if($article->publication_status === PublicationStatus::DRAFT->value)
                                         <form action="{{ route('admin.articles.publish', $article->id) }}" method="POST"
                                               onsubmit="return confirm('Publish this article?')"
                                               class="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\PublicationStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use Illuminate\Contracts\View\Factory;
@@ -39,7 +40,7 @@ class ArticleController extends Controller
 
     public function publish(Article $article): RedirectResponse
     {
-        $article->update(['publication_status'=> 'published', 'published_at' => now()]);
+        $article->update(['publication_status'=> PublicationStatus::PUBLISHED->value, 'published_at' => now()]);
         return redirect()->route('admin.articles.index');
     }
 
