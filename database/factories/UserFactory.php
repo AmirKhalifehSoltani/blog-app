@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Enums\UserType;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends Factory<User>
  */
 class UserFactory extends Factory
 {
@@ -29,7 +29,6 @@ class UserFactory extends Factory
             'last_name'         => fake()->lastName(),
             'email'             => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'user_type'         => fake()->randomElement([UserType::CLIENT, UserType::ADMIN]),
             'password'          => static::$password ??= Hash::make('password'),
             'remember_token'    => Str::random(10),
         ];
@@ -42,22 +41,6 @@ class UserFactory extends Factory
     {
         return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
-        ]);
-    }
-
-    public function admin(): static
-    {
-        return $this->state(fn(array $attributes) => [
-            'user_type' => UserType::ADMIN,
-            'email'     => 'admin@alibaba.ir',
-        ]);
-    }
-
-    public function client(): static
-    {
-        return $this->state(fn(array $attributes) => [
-            'user_type' => UserType::CLIENT,
-            'email'     => 'client@alibaba.ir',
         ]);
     }
 }

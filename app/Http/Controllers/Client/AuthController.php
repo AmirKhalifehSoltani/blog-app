@@ -23,7 +23,6 @@ class AuthController extends Controller
     public function do_login(LoginRequest $request): RedirectResponse
     {
         $credentials = $request->only('email', 'password');
-//        $credentials['user_type'] = UserType::CLIENT;
         if (auth()->attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->route('articles.index');
