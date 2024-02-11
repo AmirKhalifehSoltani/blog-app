@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\PublicationStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Service\Admin\ArticleService;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -12,13 +12,14 @@ use Illuminate\Http\RedirectResponse;
 
 class ArticleController extends Controller
 {
+    public function __construct(protected ArticleService $articleService) {}
     /**
      * Display a listing of the resource.
      */
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $articles = Article::with('author')->get();
-        return view('admin.article.index', compact(['articles']));
+        $articles = $this->articleService->getAllArticles();
+        return view('admin.article.index', compact('articles'));
     }
 
     /**
@@ -34,25 +35,25 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article): RedirectResponse
     {
-        $article->delete();
+        $this->articleService->delete($article);
         return redirect()->route('admin.articles.index');
     }
 
     public function publish(Article $article): RedirectResponse
     {
-        $article->update(['publication_status'=> PublicationStatus::PUBLISHED->value, 'published_at' => now()]);
+        $this->articleService->publish($article);
         return redirect()->route('admin.articles.index');
     }
 
     public function trash_list(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $articles = Article::query()->with('author')->onlyTrashed()->get();
-        return view('admin.article.trash_list', compact(['articles']));
+        $articles = $this->articleService->getTrashedArticles();
+        return view('admin.article.trash_list', compact('articles'));
     }
 
     public function restore(Article $article): RedirectResponse
     {
-        $article->restore();
+        $this->articleService->restore($article);
         return redirect()->route('admin.articles.index');
     }
 }

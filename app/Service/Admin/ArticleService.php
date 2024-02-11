@@ -7,10 +7,37 @@
 
 namespace App\Service\Admin;
 
+use App\Enums\PublicationStatus;
+use App\Models\Article;
+use Illuminate\Database\Eloquent\Collection;
+
 class ArticleService
 {
-    public function index()
+    public function getAllArticles(): Collection|array
     {
-        
-	}
+        return Article::with('author')->get();
+    }
+
+    public function delete(Article $article): void
+    {
+        $article->delete();
+    }
+
+    public function publish(Article $article): void
+    {
+        $article->update([
+            'publication_status' => PublicationStatus::PUBLISHED->value,
+            'published_at' => now(),
+        ]);
+    }
+
+    public function getTrashedArticles()
+    {
+        return Article::with('author')->onlyTrashed()->get();
+    }
+
+    public function restore(Article $article): void
+    {
+        $article->restore();
+    }
 }
