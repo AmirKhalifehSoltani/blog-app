@@ -5,9 +5,12 @@
  * Time: 2/10/24 - 9:53 PM
  */
 
-namespace App\Service;
+namespace App\Service\Admin;
 
 class ArticleService
 {
-
+    public function index()
+    {
+        
+	}
 }
