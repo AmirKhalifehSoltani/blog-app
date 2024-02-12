@@ -21,7 +21,7 @@ class ArticleController extends Controller
      */
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $articles = $this->articleService->getArticlesByCurrentUser();
+        $articles = $this->articleService->getArticlesByCurrentClient(auth()->id());
         return view('client.article.index', compact(['articles']));
     }
 
@@ -39,7 +39,7 @@ class ArticleController extends Controller
     public function store(StoreArticleRequest $request): RedirectResponse
     {
         $articleData = $request->only(['title', 'content']);
-        $article = $this->articleService->store($articleData);
+        $article = $this->articleService->store($articleData, auth()->id());
         return redirect()->route('articles.show', compact('article'));
     }
 
@@ -48,7 +48,7 @@ class ArticleController extends Controller
      */
     public function show(Article $article): View|Application|Factory|\Illuminate\Contracts\Foundation\Application|RedirectResponse
     {
-        if (!$this->articleService->userCanSeeArticle($article)) {
+        if (!$this->articleService->userCanSeeArticle($article, auth()->id())) {
             return back()->withErrors(['error' => 'Access Forbidden!']);
         }
         return view('client.article.show', compact('article'));
@@ -59,7 +59,7 @@ class ArticleController extends Controller
      */
     public function edit(Article $article): \Illuminate\Contracts\Foundation\Application|Factory|View|Application|RedirectResponse
     {
-        if (!$this->articleService->userCanEditArticle($article)) {
+        if (!$this->articleService->userCanEditArticle($article, auth()->id())) {
             return back()->withErrors(['error' => 'Access Forbidden!']);
         }
         return view('client.article.edit', compact('article'));
@@ -70,7 +70,7 @@ class ArticleController extends Controller
      */
     public function update(UpdateArticleRequest $request, Article $article): RedirectResponse
     {
-        if (!$this->articleService->userCanEditArticle($article)) {
+        if (!$this->articleService->userCanEditArticle($article, auth()->id())) {
             return back()->withErrors(['error' => 'Access Forbidden!']);
         }
         $article = $this->articleService->update($article, $request->only(['title', 'content']));

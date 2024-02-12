@@ -13,20 +13,21 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ArticleService
 {
-    public function getArticlesByCurrentUser(): Collection|array
+    public function getArticlesByCurrentClient(string $client_id): Collection|array
     {
         return Article::query()
-            ->where(function ($query) {
-                $query->where('author_id', auth()->id())
+            ->where(function ($query) use ($client_id) {
+                $query->where('author_id', $client_id)
                     ->orWhere('publication_status', PublicationStatus::PUBLISHED->value);
             })
             ->with('author')
             ->get();
     }
 
-    public function store(array $articleData): Article
+    public function store(array $articleData, string $client_id): Article
     {
-        $articleData['author_id'] = auth()->id();
+        $articleData['author_id'] = $client_id;
+        $articleData['publication_status'] = PublicationStatus::DRAFT->value;
         return Article::create($articleData);
     }
 
@@ -36,13 +37,13 @@ class ArticleService
         return $article;
     }
 
-    public function userCanEditArticle(Article $article): bool
+    public function userCanEditArticle(Article $article, string $client_id): bool
     {
-        return ($article->author_id === auth()->id());
+        return ($article->author_id === $client_id);
     }
 
-    public function userCanSeeArticle(Article $article): bool
+    public function userCanSeeArticle(Article $article, string $client_id): bool
     {
-        return ($article->author_id === auth()->id() || $article->publication_status === PublicationStatus::PUBLISHED->value);
+        return ($article->author_id === $client_id || $article->publication_status === PublicationStatus::PUBLISHED->value);
     }
 }
