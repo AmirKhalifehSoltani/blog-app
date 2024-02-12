@@ -40,7 +40,7 @@ class ArticleController extends Controller
     {
         $articleData = $request->only(['title', 'content']);
         $article = $this->articleService->store($articleData, auth()->id());
-        return redirect()->route('articles.show', compact('article'));
+        return redirect()->route('articles.show', compact('article'))->with('success', 'Article saved successfully!');
     }
 
     /**
@@ -74,6 +74,6 @@ class ArticleController extends Controller
             return back()->withErrors(['error' => 'Access Forbidden!']);
         }
         $article = $this->articleService->update($article, $request->only(['title', 'content']));
-        return redirect()->route('articles.show', compact('article'));
+        return redirect()->route('articles.show', compact('article'))->with('success', 'Article updated successfully!');
     }
 }

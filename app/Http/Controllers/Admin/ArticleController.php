@@ -36,13 +36,13 @@ class ArticleController extends Controller
     public function destroy(Article $article): RedirectResponse
     {
         $this->articleService->delete($article);
-        return redirect()->route('admin.articles.index');
+        return redirect()->route('admin.articles.index')->with('success', 'Article deleted successfully!');
     }
 
     public function publish(Article $article): RedirectResponse
     {
         $this->articleService->publish($article);
-        return redirect()->route('admin.articles.index');
+        return redirect()->route('admin.articles.index')->with('success', 'Article published successfully!');
     }
 
     public function trash_list(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
@@ -54,6 +54,6 @@ class ArticleController extends Controller
     public function restore(Article $article): RedirectResponse
     {
         $this->articleService->restore($article);
-        return redirect()->route('admin.articles.index');
+        return redirect()->route('admin.articles.index')->with('success', 'Article restored successfully!');
     }
 }
