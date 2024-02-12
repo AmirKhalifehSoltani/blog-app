@@ -6,12 +6,12 @@ use App\Enums\PublicationStatus;
 use App\Models\Article;
 use App\Models\Client;
 use App\Service\Admin\ArticleService;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ArticleServiceTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     protected ArticleService $articleService;
 
