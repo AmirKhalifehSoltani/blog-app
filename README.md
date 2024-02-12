@@ -33,8 +33,6 @@ Run following command for project deployment
 9. php artisan migrate
 
 10. php artisan db:seed
-
-11. php artisan test
 ```
 
 Blog App project now is running on [localhost:8000](http://localhost:8000)
@@ -49,6 +47,11 @@ Admin:
 Clients:
  - email: `client1@alibaba.ir`, password: `password`
  - email: `client2@alibaba.ir`, password: `password`
+
+### Run tests
+```
+php artisan test
+```
 
 ## Design
 
