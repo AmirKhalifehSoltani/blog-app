@@ -7,7 +7,6 @@ use App\Models\Article;
 use App\Models\Client;
 use App\Service\Client\ArticleService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 
@@ -87,7 +86,7 @@ class ArticleServiceTest extends TestCase
      * @group ClientArticleService
      * @return void
      */
-    public function testStore()
+    public function StoreArticle()
     {
         $client = Client::factory()->create();
         $articleData = ['title'   => 'Test Article', 'content' => 'Lorem ipsum ...'];
@@ -106,7 +105,7 @@ class ArticleServiceTest extends TestCase
      * @group ClientArticleService
      * @return void
      */
-    public function testUpdateArticle()
+    public function UpdateArticle()
     {
         $client = Client::factory()->create();
         $article = Article::factory()->create(['title'     => 'Old Title', 'content'   => 'Old Content', 'author_id' => $client->id]);
@@ -124,7 +123,7 @@ class ArticleServiceTest extends TestCase
      * @group ClientArticleService
      * @return void
      */
-    public function testUserCanEditArticleWhenAuthorIsClient()
+    public function UserCanEditArticleWhenAuthorIsClient()
     {
         $article = new Article();
         $article->author_id = '123';
@@ -137,7 +136,7 @@ class ArticleServiceTest extends TestCase
      * @group ClientArticleService
      * @return void
      */
-    public function testUserCannotEditArticleWhenAuthorIsNotClient()
+    public function UserCannotEditArticleWhenAuthorIsNotClient()
     {
         $article = new Article();
         $article->author_id = '456';

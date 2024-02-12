@@ -25,10 +25,7 @@ class ArticleService
 
     public function publish(Article $article): void
     {
-        $article->update([
-            'publication_status' => PublicationStatus::PUBLISHED->value,
-            'published_at' => now(),
-        ]);
+        $article->update(['publication_status' => PublicationStatus::PUBLISHED->value, 'published_at' => now()]);
     }
 
     public function getTrashedArticles()
