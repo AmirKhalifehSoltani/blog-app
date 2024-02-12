@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ArticleService
 {
-    public function getArticlesByCurrentClient(string $client_id): Collection|array
+    public function getArticlesByCurrentClient(int $client_id): Collection|array
     {
         return Article::query()
             ->where(function ($query) use ($client_id) {
@@ -24,7 +24,7 @@ class ArticleService
             ->get();
     }
 
-    public function store(array $articleData, string $client_id): Article
+    public function store(array $articleData, int $client_id): Article
     {
         $articleData['author_id'] = $client_id;
         $articleData['publication_status'] = PublicationStatus::DRAFT->value;
@@ -37,12 +37,12 @@ class ArticleService
         return $article;
     }
 
-    public function userCanEditArticle(Article $article, string $client_id): bool
+    public function userCanEditArticle(Article $article, int $client_id): bool
     {
         return ($article->author_id === $client_id);
     }
 
-    public function userCanSeeArticle(Article $article, string $client_id): bool
+    public function userCanSeeArticle(Article $article, int $client_id): bool
     {
         return ($article->author_id === $client_id || $article->publication_status === PublicationStatus::PUBLISHED->value);
     }

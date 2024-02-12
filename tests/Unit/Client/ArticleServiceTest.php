@@ -58,7 +58,7 @@ class ArticleServiceTest extends TestCase
         // create articles for another client
         $publishedArticle = Article::factory()->create(['author_id' => $client2->id, 'publication_status' => PublicationStatus::PUBLISHED->value]);
 
-        $articles = $this->articleService->getArticlesByCurrentClient($client1);
+        $articles = $this->articleService->getArticlesByCurrentClient($client1->id);
         $this->assertCount(2, $articles);
         $this->assertTrue($articles->contains($publishedArticle));
         $this->assertTrue($articles->contains($owned_publishedArticle));
@@ -77,7 +77,7 @@ class ArticleServiceTest extends TestCase
         // create articles for another client
         Article::factory()->create(['author_id' => $client2->id, 'publication_status' => PublicationStatus::DRAFT->value]);
 
-        $articles = $this->articleService->getArticlesByCurrentClient($client1);
+        $articles = $this->articleService->getArticlesByCurrentClient($client1->id);
         $this->assertCount(0, $articles);
     }
 
@@ -126,8 +126,8 @@ class ArticleServiceTest extends TestCase
     public function UserCanEditArticleWhenAuthorIsClient()
     {
         $article = new Article();
-        $article->author_id = '123';
-        $canEdit = $this->articleService->userCanEditArticle($article, '123');
+        $article->author_id = 123;
+        $canEdit = $this->articleService->userCanEditArticle($article, 123);
         $this->assertTrue($canEdit);
     }
 
@@ -139,8 +139,8 @@ class ArticleServiceTest extends TestCase
     public function UserCannotEditArticleWhenAuthorIsNotClient()
     {
         $article = new Article();
-        $article->author_id = '456';
-        $canEdit = $this->articleService->userCanEditArticle($article, '123');
+        $article->author_id = 456;
+        $canEdit = $this->articleService->userCanEditArticle($article, 123);
         $this->assertFalse($canEdit);
     }
 
