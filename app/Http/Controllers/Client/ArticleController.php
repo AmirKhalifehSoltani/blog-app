@@ -15,7 +15,7 @@ use Illuminate\Http\RedirectResponse;
 class ArticleController extends Controller
 {
 
-    public function __construct(protected ArticleService $articleService) {}
+    public function __construct(protected readonly ArticleService $articleService) {}
     /**
      * Display a listing of the resource.
      */
