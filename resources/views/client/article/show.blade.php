@@ -1,4 +1,4 @@
-@extends('template.layout')
+@extends('client.template.layout')
 
 @section('content')
     <div class="max-w-7xl mx-auto p-6 lg:p-8">

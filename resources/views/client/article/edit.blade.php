@@ -1,4 +1,4 @@
-@extends('template.layout')
+@extends('client.template.layout')
 
 @section('content')
     <div class="relative flex flex-col text-gray-700 bg-transparent shadow-none rounded-xl bg-clip-border">

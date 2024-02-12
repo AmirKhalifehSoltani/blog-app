@@ -1,5 +1,5 @@
 @php use App\Enums\PublicationStatus; @endphp
-@extends('template.layout')
+@extends('admin.template.layout')
 
 @section('content')
     <div class="max-w-7xl mx-auto p-6 lg:p-8">

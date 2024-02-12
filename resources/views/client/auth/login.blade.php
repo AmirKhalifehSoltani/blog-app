@@ -1,4 +1,4 @@
-@extends('template.layout')
+@extends('client.template.layout')
 
 @section('content')
     {{--    @if (count($errors))--}}
